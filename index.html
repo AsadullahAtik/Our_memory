@@ -208,6 +208,20 @@
           >Neon Love</a
         >
       </div>
+         <!-- Search -->
+        <div class="relative w-full md:w-72">
+          <span
+            class="material-symbols-outlined absolute left-8 top-1/2 -translate-y-1/2 text-[#e3e0f3]/40 text-[20px]"
+            >search</span
+          >
+          <input
+            id="search-input"
+            type="text"
+            placeholder="Search moments…"
+            class="w-full bg-[#1f1e2b] border border-[#ff4ecd]/20 rounded-full pl-12 pr-5 py-3 text-sm text-[#e3e0f3] placeholder-[#e3e0f3]/30 transition-all duration-300"
+          />
+        </div>
+<!--End search-->
       <div class="flex items-center gap-6">
         <button
           class="hover:bg-[#ff4ecd]/10 transition-all duration-300 p-2 rounded-full scale-95 active:scale-90"
@@ -252,7 +266,7 @@
           <p
             class="hidden group-hover:block font-label uppercase tracking-widest text-[8px] text-[#e3e0f3]/40"
           >
-            My Moments
+            Our Moments
           </p>
         </div>
         <div class="flex flex-col w-full gap-4">
@@ -274,7 +288,7 @@
               >photo_library</span
             >
             <span
-              class="hidden group-hover:block font-label uppercase tracking-widest text-[10px]"><a href="#gallery.html"
+              class="hidden group-hover:block font-label uppercase tracking-widest text-[10px]"><a href="https://asadullahatik.github.io/Our_memory/gallery.html"
              >Gallery</a> </span
             >
           </div>
@@ -845,6 +859,32 @@
 
       // Initialize
       startAutoSlide();
+
+       // ----------- SEARCH -----------
+      document
+        .getElementById("search-input")
+        .addEventListener("input", function () {
+          const query = this.value.toLowerCase().trim();
+          galleryItems = Array.from(document.querySelectorAll(".gallery-item"));
+          let count = 0;
+          galleryItems.forEach((item) => {
+            const title = (item.getAttribute("data-title") || "").toLowerCase();
+            const caption = (
+              item.getAttribute("data-caption") || ""
+            ).toLowerCase();
+            if (!query || title.includes(query) || caption.includes(query)) {
+              item.classList.remove("hidden");
+              count++;
+            } else {
+              item.classList.add("hidden");
+            }
+          });
+          document.getElementById("photo-count").textContent =
+            count + " Moment" + (count !== 1 ? "s" : "");
+          document
+            .getElementById("empty-state")
+            .classList.toggle("hidden", count > 0);
+        });
 
       //  ripple js
 
