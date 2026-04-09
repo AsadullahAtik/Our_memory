@@ -174,6 +174,91 @@
       .hero-slide.active-slide-zoom img {
         transform: scale(1.1);
       }
+
+      /* index gallery masonry */
+      .masonry-grid {
+        columns: 3;
+        column-gap: 1.25rem;
+      }
+      @media (max-width: 1024px) {
+        .masonry-grid {
+          columns: 2;
+        }
+      }
+      @media (max-width: 640px) {
+        .masonry-grid {
+          columns: 1;
+        }
+      }
+
+      .gallery-item {
+        break-inside: avoid;
+        margin-bottom: 1.25rem;
+        position: relative;
+        overflow: hidden;
+        border-radius: 1rem;
+        cursor: pointer;
+      }
+      .gallery-item img {
+        width: 100%;
+        display: block;
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .gallery-item:hover img {
+        transform: scale(1.08);
+      }
+
+      .gallery-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(18, 18, 31, 0.92) 0%,
+          rgba(122, 92, 255, 0.15) 60%,
+          transparent 100%
+        );
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 1.5rem;
+      }
+      .gallery-item:hover .gallery-overlay {
+        opacity: 1;
+      }
+      .gallery-item:hover .heart-btn {
+        opacity: 1 !important;
+      }
+
+      .neon-border {
+        position: absolute;
+        inset: 0;
+        border-radius: 1rem;
+        border: 1px solid rgba(255, 78, 205, 0);
+        transition:
+          border-color 0.4s ease,
+          box-shadow 0.4s ease;
+        pointer-events: none;
+      }
+      .gallery-item:hover .neon-border {
+        border-color: rgba(255, 78, 205, 0.5);
+        box-shadow:
+          inset 0 0 20px rgba(255, 78, 205, 0.07),
+          0 0 30px rgba(255, 78, 205, 0.15);
+      }
+      /* End Gallery */
+
+      /* End Text */
+      @keyframes wave {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
     </style>
   </head>
   <body class="bg-background text-on-surface font-body overflow-x-hidden">
@@ -208,20 +293,20 @@
           >Neon Love</a
         >
       </div>
-         <!-- Search -->
-        <div class="relative w-full md:w-72">
-          <span
-            class="material-symbols-outlined absolute left-8 top-1/2 -translate-y-1/2 text-[#e3e0f3]/40 text-[20px]"
-            >search</span
-          >
-          <input
-            id="search-input"
-            type="text"
-            placeholder="Search moments…"
-            class="w-full bg-[#1f1e2b] border border-[#ff4ecd]/20 rounded-full pl-12 pr-5 py-3 text-sm text-[#e3e0f3] placeholder-[#e3e0f3]/30 transition-all duration-300"
-          />
-        </div>
-<!--End search-->
+      <!-- Search -->
+      <div class="relative w-full md:w-72">
+        <span
+          class="material-symbols-outlined absolute left-8 top-1/2 -translate-y-1/2 text-[#e3e0f3]/40 text-[20px]"
+          >search</span
+        >
+        <input
+          id="search-input"
+          type="text"
+          placeholder="    Search moments…"
+          class="w-full bg-[#1f1e2b] border border-[#ff4ecd]/20 rounded-full pl-12 pr-5 py-3 text-sm text-[#e3e0f3] placeholder-[#e3e0f3]/30 transition-all duration-300"
+        />
+      </div>
+      <!--End search-->
       <div class="flex items-center gap-6">
         <button
           class="hover:bg-[#ff4ecd]/10 transition-all duration-300 p-2 rounded-full scale-95 active:scale-90"
@@ -288,9 +373,9 @@
               >photo_library</span
             >
             <span
-              class="hidden group-hover:block font-label uppercase tracking-widest text-[10px]"><a href="https://asadullahatik.github.io/Our_memory/gallery.html"
-             >Gallery</a> </span
-            >
+              class="hidden group-hover:block font-label uppercase tracking-widest text-[10px]"
+              >Gallery
+            </span>
           </div>
           <div
             class="flex items-center gap-4 w-full px-6 py-3 text-[#e3e0f3]/40 hover:text-[#ff4ecd] hover:bg-[#7a5cff]/10 transition-all duration-300"
@@ -617,45 +702,117 @@
       </div>
     </section>
 
-     <!--new gallery for-->
+    <!--new gallery for-->
 
     <section id="gallery" class="px-10 md:px-32 py-20">
-      <h2 class="text-4xl font-headline mb-10 italic text-primary">
+      <h2 class="text-4xl font-headline mb-4 italic text-primary">
         Our Gallery 💖
       </h2>
+      <p class="text-on-surface-variant mb-8 text-sm">
+        <span id="photo-count">3 Moments</span>
+      </p>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+      <div class="masonry-grid" id="gallery-masonry">
         <div
-          class="gallery-item glass-panel rounded-xl overflow-hidden cursor-pointer"
+          class="gallery-item glass-panel"
+          data-title="My Favorite Person"
+          data-caption="Out of everyone in the world… I found you."
         >
-          <img
-            src="p1.jpeg"
-            class="w-full h-full object-cover opacity-70 hover:opacity-100 transition"
-          />
+          <img src="p1.jpeg" alt="My Favorite Person" />
+          <div class="gallery-overlay">
+            <span
+              class="text-[10px] font-label uppercase text-[#ff4ecd] tracking-widest mb-1"
+              >Us Together</span
+            >
+            <h3 class="font-headline text-base text-[#e3e0f3]">
+              My Favorite Person
+            </h3>
+            <p class="text-[#e3e0f3]/60 text-xs mt-1 italic">
+              Out of everyone in the world… I found you.
+            </p>
+          </div>
+          <div class="neon-border"></div>
+          <button
+            class="heart-btn absolute top-3 right-3 w-9 h-9 rounded-full bg-[#12121f]/70 flex items-center justify-center transition-all"
+            style="opacity: 0"
+            onclick="toggleHeart(this)"
+          >
+            <span
+              class="material-symbols-outlined text-[18px] text-[#e3e0f3]/60"
+              >favorite</span
+            >
+          </button>
         </div>
 
         <div
-          class="gallery-item glass-panel rounded-xl overflow-hidden cursor-pointer"
+          class="gallery-item glass-panel"
+          data-title="Those Eyes"
+          data-caption="Lost in them, never found my way back."
         >
-          <img
-            src="p2.jpeg"
-            class="w-full h-full object-cover opacity-70 hover:opacity-100 transition"
-          />
+          <img src="p2.jpeg" alt="Those Eyes" />
+          <div class="gallery-overlay">
+            <span
+              class="text-[10px] font-label uppercase text-[#ff4ecd] tracking-widest mb-1"
+              >Just You</span
+            >
+            <h3 class="font-headline text-base text-[#e3e0f3]">Those Eyes</h3>
+            <p class="text-[#e3e0f3]/60 text-xs mt-1 italic">
+              Lost in them, never found my way back.
+            </p>
+          </div>
+          <div class="neon-border"></div>
+          <button
+            class="heart-btn absolute top-3 right-3 w-9 h-9 rounded-full bg-[#12121f]/70 flex items-center justify-center transition-all"
+            style="opacity: 0"
+            onclick="toggleHeart(this)"
+          >
+            <span
+              class="material-symbols-outlined text-[18px] text-[#e3e0f3]/60"
+              >favorite</span
+            >
+          </button>
         </div>
 
         <div
-          class="gallery-item glass-panel rounded-xl overflow-hidden cursor-pointer"
+          class="gallery-item glass-panel"
+          data-title="My Peace"
+          data-caption="With you, I found the peace I never knew I needed."
         >
-          <img
-            src="p3.jpeg"
-            class="w-full h-full object-cover opacity-70 hover:opacity-100 transition"
-          />
+          <img src="p3.jpeg" alt="My Peace" />
+          <div class="gallery-overlay">
+            <span
+              class="text-[10px] font-label uppercase text-[#ff4ecd] tracking-widest mb-1"
+              >Vibes</span
+            >
+            <h3 class="font-headline text-base text-[#e3e0f3]">My Peace 💜</h3>
+            <p class="text-[#e3e0f3]/60 text-xs mt-1 italic">
+              With you, I found the peace I never knew I needed.
+            </p>
+          </div>
+          <div class="neon-border"></div>
+          <button
+            class="heart-btn absolute top-3 right-3 w-9 h-9 rounded-full bg-[#12121f]/70 flex items-center justify-center transition-all"
+            style="opacity: 0"
+            onclick="toggleHeart(this)"
+          >
+            <span
+              class="material-symbols-outlined text-[18px] text-[#e3e0f3]/60"
+              >favorite</span
+            >
+          </button>
         </div>
       </div>
+
+      <div
+        id="empty-state"
+        class="hidden text-center mt-16 text-on-surface-variant italic"
+      >
+        No moments found 💔
+      </div>
     </section>
+
     <!-- end of gallery -->
 
-    
     <!-- Content Sections for Visual Depth -->
     <main class="relative z-10 bg-background pt-32 pb-64 px-10 md:px-32">
       <div class="flex flex-col lg:flex-row gap-16 items-start">
@@ -740,14 +897,134 @@
           </div>
         </div>
       </div>
+
+      <!-- Wave Text -->
+      <section
+        class="flex justify-center items-center pt-24 pb-20 bg-background"
+      >
+        <h1 class="flex gap-1">
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:0s]"
+            >B</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:0.15s]"
+            >U</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:0.3s]"
+            >I</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:0.6s]"
+            >L</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:0.75s]"
+            >T</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:0.9s]"
+            >&nbsp;</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:1.05s]"
+            >W</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:1.2s]"
+            >I</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:1.35s]"
+            >T</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:1.5s]"
+            >H</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:0s]"
+            >&nbsp;</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:0.15s]"
+            >L</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:0.3s]"
+            >O</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:0.6s]"
+            >V</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:0.75s]"
+            >E</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:0.9s]"
+            >💖,</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:0.9s]"
+            >&nbsp;</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:1.05s]"
+            >J</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:1.2s]"
+            >U</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:1.35s]"
+            >S</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:1.5s]"
+            >T</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:0.9s]"
+            >&nbsp;</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:1.05s]"
+            >F</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:1.2s]"
+            >O</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:1.35s]"
+            >R</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:1.5s]"
+            >&nbsp;</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:0.9s]"
+            >Y</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:1.05s]"
+            >0</span
+          >
+          <span
+            class="inline-block text-3xl font-headline font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-[#ff4ecd] to-[#7a5cff] [animation:wave_2s_ease-in-out_infinite] [animation-delay:1.2s]"
+            >U</span
+          >
+        </h1>
+      </section>
     </main>
     <!-- ripple-->
     <div class="cursor-ripple"></div>
     <script>
-
-  
-
-      
       const slides = document.querySelectorAll(".hero-slide");
       const progressBar = document.getElementById("progress-bar");
       const previewCards = document.querySelectorAll(".preview-card");
@@ -860,12 +1137,30 @@
       // Initialize
       startAutoSlide();
 
-       // ----------- SEARCH -----------
+      // ----------- HEART -----------
+      function toggleHeart(btn) {
+        btn.classList.toggle("liked");
+        const icon = btn.querySelector(".material-symbols-outlined");
+        if (btn.classList.contains("liked")) {
+          icon.style.color = "#ff4ecd";
+          icon.style.fontVariationSettings =
+            '"FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24';
+          btn.style.opacity = "1";
+        } else {
+          icon.style.color = "rgba(227,224,243,0.6)";
+          icon.style.fontVariationSettings =
+            '"FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24';
+        }
+      }
+
+      // ----------- SEARCH -----------
       document
         .getElementById("search-input")
         .addEventListener("input", function () {
           const query = this.value.toLowerCase().trim();
-          galleryItems = Array.from(document.querySelectorAll(".gallery-item"));
+          const galleryItems = Array.from(
+            document.querySelectorAll(".gallery-item"),
+          );
           let count = 0;
           galleryItems.forEach((item) => {
             const title = (item.getAttribute("data-title") || "").toLowerCase();
@@ -885,7 +1180,6 @@
             .getElementById("empty-state")
             .classList.toggle("hidden", count > 0);
         });
-
       //  ripple js
 
       const cursor = document.querySelector(".cursor-ripple");
