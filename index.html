@@ -602,6 +602,46 @@
         ></button>
       </div>
     </section>
+
+     <!--new gallery for-->
+
+    <section id="gallery" class="px-10 md:px-32 py-20">
+      <h2 class="text-4xl font-headline mb-10 italic text-primary">
+        Our Gallery 💖
+      </h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <div
+          class="gallery-item glass-panel rounded-xl overflow-hidden cursor-pointer"
+        >
+          <img
+            src="p1.jpeg"
+            class="w-full h-full object-cover opacity-70 hover:opacity-100 transition"
+          />
+        </div>
+
+        <div
+          class="gallery-item glass-panel rounded-xl overflow-hidden cursor-pointer"
+        >
+          <img
+            src="p2.jpeg"
+            class="w-full h-full object-cover opacity-70 hover:opacity-100 transition"
+          />
+        </div>
+
+        <div
+          class="gallery-item glass-panel rounded-xl overflow-hidden cursor-pointer"
+        >
+          <img
+            src="p3.jpeg"
+            class="w-full h-full object-cover opacity-70 hover:opacity-100 transition"
+          />
+        </div>
+      </div>
+    </section>
+    <!-- end of gallery -->
+
+    
     <!-- Content Sections for Visual Depth -->
     <main class="relative z-10 bg-background pt-32 pb-64 px-10 md:px-32">
       <div class="flex flex-col lg:flex-row gap-16 items-start">
@@ -690,6 +730,23 @@
     <!-- ripple-->
     <div class="cursor-ripple"></div>
     <script>
+
+      // gallery js
+      const galleryBtn = document.querySelector('[data-icon="photo_library"]');
+
+      galleryBtn.addEventListener("click", () => {
+        const gallerySection = document.getElementById("gallery");
+
+        if (gallerySection) {
+          gallerySection.scrollIntoView({
+            behavior: "smooth",
+          });
+        }
+      });
+
+      //gallery end
+
+      
       const slides = document.querySelectorAll(".hero-slide");
       const progressBar = document.getElementById("progress-bar");
       const previewCards = document.querySelectorAll(".preview-card");
