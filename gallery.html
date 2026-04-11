@@ -1270,6 +1270,27 @@ that makes everything else fade.
         cursor.classList.add("ripple-click");
         setTimeout(() => cursor.classList.remove("ripple-click"), 600);
       });
+
+     
+// Simple Login Protection
+function checkAuth() {
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const loginTime = localStorage.getItem("loginTime");
+
+  // Auto logout after 7 days (optional)
+  if (loginTime && Date.now() - loginTime > 7 * 24 * 60 * 60 * 1000) {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("loginTime");
+  }
+
+  if (!isLoggedIn) {
+    window.location.href = "login.html";
+  }
+}
+
+// Run protection on page load
+document.addEventListener("DOMContentLoaded", checkAuth);
+
     </script>
   </body>
 </html>
